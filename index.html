@@ -235,6 +235,34 @@
   .contact-links a{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--paper-dim);transition:color .2s;}
   .contact-links a:hover{color:var(--amber);}
   .fine{margin-top:50px;color:var(--paper-dim);font-size:0.78rem;font-family:'JetBrains Mono',monospace;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  /* ---------- CONTACT FORM ---------- */
+  .contact-form{
+    margin-top:44px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px;
+    display:grid;gap:16px;
+    max-width:560px;
+  }
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--paper-dim);letter-spacing:0.06em;text-transform:uppercase;}
+  .field input,.field textarea{
+    background:var(--ink-soft);border:1px solid var(--line);border-radius:8px;
+    padding:11px 14px;color:var(--paper);font-family:'Inter',sans-serif;font-size:0.92rem;
+    resize:vertical;
+  }
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--amber);}
+  .form-submit{
+    justify-self:start;
+    background:var(--amber);color:var(--ink);border:none;
+    padding:12px 24px;border-radius:999px;font-weight:600;font-size:0.9rem;
+    cursor:pointer;transition:all .2s;
+  }
+  .form-submit:hover{background:#f4b452;transform:translateY(-1px);}
+  .form-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+  .form-status{font-family:'JetBrains Mono',monospace;font-size:0.82rem;min-height:1.2em;}
+  .form-status.ok{color:var(--teal);}
+  .form-status.err{color:#e0705f;}
 </style>
 </head>
 <body>
@@ -402,12 +430,65 @@
         <a href="https://github.com/Hairi19" target="_blank" rel="noopener">GitHub — Hairi19</a>
       </div>
     </div>
+    <form class="contact-form" id="contact-form">
+      <div class="field">
+        <label for="cf-name">Name</label>
+        <input type="text" id="cf-name" name="name" required maxlength="100" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label for="cf-email">Email</label>
+        <input type="email" id="cf-email" name="email" required maxlength="150" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" required rows="4" maxlength="2000" placeholder="What's on your mind?"></textarea>
+      </div>
+      <button type="submit" class="form-submit" id="cf-submit">Send message</button>
+      <div class="form-status" id="cf-status" role="status" aria-live="polite"></div>
+    </form>
+
     <div class="fine">
       <span>Mohamad Hairi Bin Abdul Ahmad · Sabah, Malaysia</span>
       <span>Built with care, one RFID tap at a time.</span>
     </div>
   </div>
 </footer>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = 'https://oaspjugpzsnxjrtxqzbm.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hc3BqdWdwenNueGpydHhxemJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3NjMxNzcsImV4cCI6MjEwMTMzOTE3N30.JnUsoELNUssu_sWGCMELQgJS55F4YmhhZ8854wOYhOg';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('cf-status');
+  const submitBtn = document.getElementById('cf-submit');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    status.textContent = 'Sending...';
+    status.className = 'form-status';
+
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+
+    const { error } = await supabase.from('messages').insert([{ name, email, message }]);
+
+    if (error) {
+      status.textContent = 'Something went wrong. Please try again.';
+      status.className = 'form-status err';
+    } else {
+      status.textContent = 'Message sent — thanks for reaching out!';
+      status.className = 'form-status ok';
+      form.reset();
+    }
+    submitBtn.disabled = false;
+  });
+</script>
 
 </body>
 </html>
