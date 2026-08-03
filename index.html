@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohamad Hairi — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12161d;
+    --ink-soft:#1b212b;
+    --panel:#1e2530;
+    --paper:#eee8db;
+    --paper-dim:#b9b4a8;
+    --amber:#e8a33d;
+    --amber-soft:#e8a33d33;
+    --teal:#3fa7a0;
+    --teal-soft:#3fa7a022;
+    --line:#333c4a;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--amber);color:var(--ink);}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(18,22,29,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{font-weight:600;font-size:0.95rem;letter-spacing:0.02em;display:flex;align-items:center;gap:8px;}
+  .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);}
+  .navlinks{display:flex;gap:28px;font-size:0.85rem;color:var(--paper-dim);}
+  .navlinks a{transition:color .2s;}
+  .navlinks a:hover{color:var(--amber);}
+  @media (max-width:640px){.navlinks{display:none;}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:100px 0 80px;
+    position:relative;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+  }
+  @media (max-width:860px){.hero{grid-template-columns:1fr;padding:64px 0 56px;}}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.75rem;
+    color:var(--teal);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--teal);}
+
+  .hero h1{
+    font-size:clamp(2.2rem,5.2vw,3.6rem);
+    font-weight:700;
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 span{color:var(--amber);}
+  .hero p.lead{
+    margin-top:20px;
+    max-width:46ch;
+    color:var(--paper-dim);
+    font-size:1.05rem;
+  }
+  .hero-ctas{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    padding:12px 22px;border-radius:999px;font-size:0.9rem;font-weight:500;
+    border:1px solid var(--line);transition:all .2s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:var(--amber);color:var(--ink);border-color:var(--amber);}
+  .btn-primary:hover{background:#f4b452;transform:translateY(-1px);}
+  .btn-ghost{color:var(--paper);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+
+  /* ---------- RFID CARD SIGNATURE ---------- */
+  .scan-stage{
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    height:340px;
+  }
+  .reader{
+    width:180px;height:180px;border-radius:24px;
+    background:linear-gradient(160deg,var(--panel),#161b23);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+  .reader::after{
+    content:'';
+    position:absolute;inset:14px;
+    border-radius:16px;
+    border:1px dashed #3a4354;
+  }
+  .reader-glyph{
+    width:46px;height:46px;
+    border:2px solid var(--teal);
+    border-radius:50%;
+    position:relative;
+  }
+  .reader-glyph::before,.reader-glyph::after{
+    content:'';position:absolute;border:2px solid var(--teal);border-radius:50%;
+    top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;
+    animation:pulse 2.4s ease-out infinite;
+  }
+  .reader-glyph::before{width:70px;height:70px;animation-delay:0s;}
+  .reader-glyph::after{width:100px;height:100px;animation-delay:.6s;}
+  @keyframes pulse{
+    0%{opacity:.6;transform:translate(-50%,-50%) scale(.6);}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1.25);}
+  }
+  .id-card{
+    position:absolute;
+    width:210px;
+    background:linear-gradient(135deg,#28323f,#1a2029);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px 18px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.7);
+    animation:tap 4.5s ease-in-out infinite;
+    top:8px;
+    left:calc(50% - 70px);
+  }
+  @keyframes tap{
+    0%,10%{transform:translate(-90px,-40px) rotate(-8deg);}
+    45%,55%{transform:translate(0,10px) rotate(0deg);}
+    90%,100%{transform:translate(-90px,-40px) rotate(-8deg);}
+  }
+  .id-card .chip{width:26px;height:20px;border-radius:4px;background:linear-gradient(160deg,var(--amber),#b3781f);margin-bottom:10px;}
+  .id-card .name{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--paper-dim);letter-spacing:0.04em;}
+  .id-card .role{font-size:0.72rem;color:var(--paper);margin-top:3px;font-weight:600;}
+  .status-tag{
+    position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:0.7rem;
+    color:var(--teal);letter-spacing:0.08em;
+    display:flex;align-items:center;gap:6px;
+  }
+  .status-tag .led{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:76px 0;border-top:1px solid var(--line);}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:36px;flex-wrap:wrap;}
+  .sec-num{font-family:'JetBrains Mono',monospace;color:var(--amber);font-size:0.85rem;}
+  .sec-head h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:600;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:50px;}
+  @media (max-width:800px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{color:var(--paper-dim);margin-bottom:16px;max-width:60ch;}
+  .fact-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;
+  }
+  .fact-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:0.9rem;}
+  .fact-row:last-child{border-bottom:none;}
+  .fact-row .k{color:var(--paper-dim);font-family:'JetBrains Mono',monospace;font-size:0.78rem;}
+  .fact-row .v{font-weight:500;text-align:right;}
+
+  /* ---------- SKILLS ---------- */
+  .skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;}
+  .skill-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
+  .skill-card h3{font-size:0.95rem;color:var(--amber);margin-bottom:14px;font-family:'JetBrains Mono',monospace;font-weight:500;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-size:0.78rem;padding:6px 12px;border-radius:999px;
+    background:var(--teal-soft);border:1px solid #3fa7a044;color:#a9e0da;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .proj{
+    display:grid;grid-template-columns:1fr;gap:22px;
+  }
+  .proj-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px;display:grid;grid-template-columns:auto 1fr;gap:24px;
+  }
+  @media (max-width:700px){.proj-card{grid-template-columns:1fr;}}
+  .proj-idx{font-family:'JetBrains Mono',monospace;color:var(--paper-dim);font-size:0.85rem;padding-top:4px;}
+  .proj-card h3{font-size:1.15rem;margin-bottom:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .badge{
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;
+    background:var(--amber-soft);color:var(--amber);border:1px solid #e8a33d55;
+    padding:3px 9px;border-radius:999px;font-weight:500;
+  }
+  .proj-card .desc{color:var(--paper-dim);margin:10px 0 14px;max-width:65ch;font-size:0.95rem;}
+  .stack{display:flex;flex-wrap:wrap;gap:8px;}
+  .stack span{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--paper-dim);border:1px solid var(--line);padding:4px 10px;border-radius:6px;}
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{position:relative;padding-left:28px;}
+  .timeline::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line);}
+  .t-item{position:relative;padding-bottom:34px;}
+  .t-item:last-child{padding-bottom:0;}
+  .t-item::before{content:'';position:absolute;left:-28px;top:4px;width:11px;height:11px;border-radius:50%;background:var(--ink);border:2px solid var(--amber);}
+  .t-item .t-when{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--teal);}
+  .t-item h3{font-size:1.02rem;margin:6px 0 4px;}
+  .t-item p{color:var(--paper-dim);font-size:0.9rem;max-width:60ch;}
+
+  /* ---------- FOOTER / CONTACT ---------- */
+  footer{padding:60px 0 40px;border-top:1px solid var(--line);}
+  .contact-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;}
+  .contact-row h2{font-size:clamp(1.6rem,4vw,2.4rem);max-width:14ch;}
+  .contact-links{display:flex;flex-direction:column;gap:10px;}
+  .contact-links a{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--paper-dim);transition:color .2s;}
+  .contact-links a:hover{color:var(--amber);}
+  .fine{margin-top:50px;color:var(--paper-dim);font-size:0.78rem;font-family:'JetBrains Mono',monospace;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="brand-dot"></span>M. HAIRI</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div>
+    <div class="eyebrow">Big Data &amp; IoT Student · Sabah, Malaysia</div>
+    <h1>Mohamad Hairi<br>Bin Abdul Ahmad<span>.</span></h1>
+    <p class="lead">23-year-old Diploma in Computer Technology (Big Data Analytics) student at TVETMARA Lumut, Perak. I build IoT systems, computer-vision tools, and data-driven dashboards — and freelance on the side.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#projects">See my projects</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    </div>
+  </div>
+
+  <div class="scan-stage" aria-hidden="true">
+    <div class="reader"><div class="reader-glyph"></div></div>
+    <div class="id-card">
+      <div class="chip"></div>
+      <div class="name">ID // 2501088</div>
+      <div class="role">Hairi — TVETMARA Lumut</div>
+    </div>
+    <div class="status-tag"><span class="led"></span>ACCESS GRANTED</div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <div>
+        <p>I'm from Sabah, currently studying in Peninsular Malaysia — a diploma journey that started at what was then IKM Lumut, now rebranded TVETMARA Lumut. I'm in Semester 4 of the July–December 2026 session, on track to graduate in 2027.</p>
+        <p>My work sits at the intersection of hardware and data: Raspberry Pi builds, RFID systems, computer vision, and the dashboards that make sense of it all. Outside coursework, I freelance on Fiverr and Upwork, and I'm into UI/UX design, AI image generation tools, gaming, and skincare.</p>
+      </div>
+      <div class="fact-card mono">
+        <div class="fact-row"><span class="k">AGE</span><span class="v">23</span></div>
+        <div class="fact-row"><span class="k">FROM</span><span class="v">Sabah, Malaysia</span></div>
+        <div class="fact-row"><span class="k">STUDYING AT</span><span class="v">TVETMARA Lumut, Perak</span></div>
+        <div class="fact-row"><span class="k">PROGRAMME</span><span class="v">Dip. Computer Technology (Big Data Analytics)</span></div>
+        <div class="fact-row"><span class="k">SEMESTER</span><span class="v">4 · Jul–Dec 2026</span></div>
+        <div class="fact-row"><span class="k">CGPA</span><span class="v">3.76 (Sem 3)</span></div>
+        <div class="fact-row"><span class="k">GRAD YEAR</span><span class="v">2027</span></div>
+        <div class="fact-row"><span class="k">CERT</span><span class="v">SKM Level 3, GIATMARA Sipitang</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Skills</h2></div>
+    <div class="skill-groups">
+      <div class="skill-card">
+        <h3>HARDWARE / IOT</h3>
+        <div class="chip-row">
+          <span class="chip">Raspberry Pi</span><span class="chip">RFID (RC522)</span>
+          <span class="chip">Arduino</span><span class="chip">Pi Camera</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>SOFTWARE / BACKEND</h3>
+        <div class="chip-row">
+          <span class="chip">Python</span><span class="chip">Flask</span>
+          <span class="chip">SQLite</span><span class="chip">Git/GitHub</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>DATA / AI</h3>
+        <div class="chip-row">
+          <span class="chip">Hadoop &amp; HDFS</span><span class="chip">OpenCV</span>
+          <span class="chip">TensorFlow</span><span class="chip">Data Analysis</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>DESIGN / SYSTEMS</h3>
+        <div class="chip-row">
+          <span class="chip">UI/UX Design</span><span class="chip">Windows Server</span>
+          <span class="chip">Cisco Networking</span><span class="chip">AI Image Tools</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Projects</h2></div>
+    <div class="proj">
+
+      <div class="proj-card">
+        <div class="proj-idx">01</div>
+        <div>
+          <h3>ORBIT <span class="badge">Final Year Project</span></h3>
+          <p class="desc">An RFID-based login and order tracking system built for Sarman Printing, supervised by En. Arizulhakim bin Ab Rasid. Staff tap an RFID card to log in, and orders are tracked through a live web dashboard.</p>
+          <div class="stack">
+            <span>Raspberry Pi</span><span>RC522 RFID</span><span>Flask</span><span>SQLite</span><span>PythonAnywhere</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-idx">02</div>
+        <div>
+          <h3>AI Safety Helmet Detection <span class="badge">🥈 Silver — i-MARATeCH 2026 / iDEA'26</span></h3>
+          <p class="desc">A real-time PPE compliance system that detects whether workers are wearing safety helmets, sending instant alerts to a Telegram channel when violations are spotted on camera.</p>
+          <div class="stack">
+            <span>Raspberry Pi</span><span>OpenCV</span><span>TensorFlow</span><span>Flask</span><span>Telegram Bot API</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-idx">03</div>
+        <div>
+          <h3>Superstore Sales Analysis <span class="badge">Freelance Portfolio</span></h3>
+          <p class="desc">An exploratory data analysis project on the Kaggle Superstore dataset, built to showcase data-cleaning and visualization skills for freelance clients on Fiverr and Upwork.</p>
+          <div class="stack">
+            <span>Python</span><span>Pandas</span><span>Data Visualization</span><span>GitHub</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Education</h2></div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-when">2024 — Present</div>
+        <h3>Diploma in Computer Technology (Big Data Analytics)</h3>
+        <p>TVETMARA Lumut, Perak. Currently Semester 4 (Jul–Dec 2026), CGPA 3.76 as of Semester 3. Expected graduation 2027.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-when">GIATMARA Sipitang</div>
+        <h3>SKM Level 3 — Computer System Technology</h3>
+        <p>National skills certification (Sijil Kemahiran Malaysia) in computer systems, completed in Sabah.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-row">
+      <h2>Let's build something.</h2>
+      <div class="contact-links">
+        <a href="https://www.fiverr.com/hairi5147" target="_blank" rel="noopener">Fiverr — @hairi5147</a>
+        <a href="#">Upwork profile</a>
+        <a href="https://github.com/Hairi19" target="_blank" rel="noopener">GitHub — Hairi19</a>
+      </div>
+    </div>
+    <div class="fine">
+      <span>Mohamad Hairi Bin Abdul Ahmad · Sabah, Malaysia</span>
+      <span>Built with care, one RFID tap at a time.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
